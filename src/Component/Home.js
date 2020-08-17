@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Navbar,Form,Nav } from 'react-bootstrap'
+import { Navbar,Form,Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import './Home.css';
 
 class Home extends Component {
     render(){
         const currentDate = new Date().toDateString();
         return (
             <Navbar bg="primary" variant="dark">
-            <Navbar.Brand >Movie-Shop</Navbar.Brand>
+            <p className="brand">Movie-Shop</p>
             <Nav className="mr-auto">
-            <Nav.Link href="#Dashboard">Dashboard</Nav.Link>
-            <Nav.Link href="#Movies">Movies</Nav.Link>
-            <Nav.Link href="#Customer">Customer</Nav.Link>
+            <Link to="/Dashboard" className="link">Dashboard</Link>
+            <Link to="/Movies" className="link">Movies</Link>
+            <Link to="/Customer" className="link">Customer</Link>
             </Nav>
             <Form className="time">
             {currentDate}
