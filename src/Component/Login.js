@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
+import './Login.css';
 
 
 class Login extends Component {
@@ -7,7 +8,11 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <Button variant="success">Log In</Button>
+                <div className="body"></div>
+                <div className="content">
+                <Button variant="success login">Log In</Button>
+                <Button variant="primary signup">Sign Up</Button>
+                </div>
             </div>
         ); 
     }

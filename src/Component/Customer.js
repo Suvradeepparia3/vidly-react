@@ -21,17 +21,17 @@ class Customer extends Component {
         })
     }
 
-    render() {
+    render(){
         const { posts } = this.state
-
+    
         return (
             <div>
-            <h1 className="cust-list">Customers list</h1><hr />
+            <h1 className="cust-list">{this.props.title}</h1><hr />
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-3 offset-2"><h4>Name</h4></div>
-                    <div className="col-3"><h4>Phone No</h4></div>
-                    <div className="col-3"><h4>Prime</h4></div>
+                    <div className="col-3 offset-3 name"><h4>{this.props.name}</h4></div>
+                    <div className="col-3"><h4>{this.props.phone}</h4></div>
+                    <div className="col-3"><h4>{this.props.prime}</h4></div>
                 </div>
             </div><hr />
             {
@@ -40,10 +40,9 @@ class Customer extends Component {
                 <div key={post._id}>
                 <div className="container-fluid">
                     <div className="row">
-                    {/* <div className="col-3">{post._id}</div> */}
-                    <div className="col-3 offset-2">{post.name}</div>
-                    <div className="col-3">{post.phone}</div>
-                    <div className="col-3">{post.isGold}</div> 
+                    <div className="col-3 offset-3 name">{post.name}</div>
+                    <div className="col-3">{post.phone}</div> 
+                    <div className="col-3">{post.isGold}</div>
                     </div>
                 </div>
                 </div>) :
