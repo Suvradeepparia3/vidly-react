@@ -15,6 +15,7 @@ class Home extends Component {
             <Link to="/Customer" className="link">Customer</Link>
             </Nav>
             <Form className="time">
+            
             {currentDate}
             </Form>
             </Navbar>

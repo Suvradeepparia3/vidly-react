@@ -8,7 +8,7 @@ class Customer extends Component {
 
         this.state = {
             movies: [],
-            loading: false
+            // loading: false
         }
     }
     componentDidMount() {

@@ -4,6 +4,7 @@ import Home from './Component/Home';
 import Login from './Component/Login';
 import Customer from './Component/Customer';
 import Movies from './Component/Movies';
+import Dashboard from './Component/Dashboard';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 class App extends Component {
@@ -14,11 +15,21 @@ class App extends Component {
           <Home />
           <Route exact path={"/"} component={Login}  /> 
           <Route
+             path='/Dashboard'
+             render={(props) => (
+                <Dashboard {...props} 
+                title={"Dashboard"} 
+                name={"Name"} 
+                phone={"Phone No"} 
+                prime={"Subscribe"} />
+             )}
+          />
+          <Route
              path='/Movies'
              render={(props) => (
                 <Movies {...props} 
                 title={"Movies list"} 
-                name={"Title"} 
+                 name={"Title"} 
                 Rate={"Rental Rate / Day"} 
                 Stock={"Stock"} />
              )}
