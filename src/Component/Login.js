@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
 import Modal from 'react-modal';
 import './Login.css';
 
@@ -8,7 +9,7 @@ class Login extends Component {
    
     constructor(props) {
         super(props);
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem("x-auth-token")
 
         let loggedIn = true
         if(token == null){
@@ -16,7 +17,7 @@ class Login extends Component {
         }
         this.state = {
             modalShow: false,
-            username:'',
+            email:'',
             password:'',
             loggedIn
         }
@@ -32,14 +33,27 @@ class Login extends Component {
 
     submitForm(e){
         e.preventDefault()
-        const { username, password } = this.state
-        // logic 
-        if(username === "A" && password === "B"){
-            localStorage.setItem("token", "uyiwsgdfeswdiuovgedfiouvhgew")
+        const { email, password } = this.state
+
+        axios.post('https://vidly-unique.herokuapp.com/api/auth', {email, password})
+        .then( respone => {
+            localStorage.setItem("x-auth-token", respone.headers['x-auth-token'])
             this.setState({
                 loggedIn:true
             })
-        }
+        })
+        .catch ( error => {
+            console.log(error)
+        });
+        
+        // TESTING PURPOSE
+        // logic 
+        // if(email === "A" && password === "B"){
+        //     localStorage.setItem("token", "uyiwsgdfeswdiuovgedfiouvhgew")
+        //     this.setState({
+        //         loggedIn:true
+        //     })
+        // }
     }
     
     render() {
@@ -59,7 +73,7 @@ class Login extends Component {
                        className="pop-content">
                         <form onSubmit={this.submitForm}>
                         <ul>
-                            <li><input type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.onChange} /></li>
+                            <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} /></li>
                             <li> <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange}/></li>
                             <li><input type="submit" /></li>
                         </ul>

@@ -7,7 +7,7 @@ import './Dashboard.css';
 class Dashboard extends Component {
     constructor(props) {
         super(props);
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem("x-auth-token")
 
         let loggedIn = true
         if(token == null){
@@ -20,6 +20,7 @@ class Dashboard extends Component {
         }
     }
     componentDidMount() {
+        if(this.state.loggedIn === true){
         axios.get('https://vidly-unique.herokuapp.com/api/rentals')
         .then( response => {
             console.log(response)
@@ -29,10 +30,11 @@ class Dashboard extends Component {
         .catch( error => {
             console.log(error)
         })
+        }
     }
 
     logOut(){
-        localStorage.removeItem("token")
+        localStorage.removeItem("x-auth-token")
     }
 
     render(){
@@ -41,22 +43,6 @@ class Dashboard extends Component {
            return <Redirect to="/" />
         }
         return (
-            // <div>
-            //     {
-            //         rental.map(post =>
-            //         <div key={post._id}>
-            //         <div> { post.dateOut } </div>
-            //             {/* // post.movie.map(any =>
-            //             // <div key={any._id}>
-            //             // <div>{any.title}</div>
-            //             // </div>) */}
-            //         {post.movie.map((sub)=>
-            //             <div>{sub.title}</div>
-            //         )}
-            //         </div>
-            //     )}
-            // </div>
-
             <div>
                 <div className="row">
                     <div className="col-10">
@@ -79,7 +65,7 @@ class Dashboard extends Component {
                 <div key={post._id}>
                 <div className="container-fluid">
                     <div className="row">
-                    <div className="col-3 offset-3 name">{post.dateOut}</div>
+                    <div className="col-3 offset-3 name">{post.customer.name}</div>
                     <div className="col-3">anything</div> 
                     <div className="col-3">is possible</div>
                     </div>
