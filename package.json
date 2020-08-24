@@ -14,7 +14,9 @@
     "react-modal": "^3.11.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3"
+    "react-scripts": "3.4.3",
+    "bable-cli": "^6.20.0",
+    "bable-preset-env": "^1.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
