@@ -44,8 +44,8 @@ class Login extends Component {
         })
         .catch ( error => {
             console.log(error)
-        });
-        
+            document.getElementById("invalid-msg").style.display = "inline"  
+        })
         // TESTING PURPOSE
         // logic 
         // if(email === "A" && password === "B"){
@@ -76,6 +76,7 @@ class Login extends Component {
                             <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} /></li>
                             <li> <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange}/></li>
                             <li><input type="submit" /></li>
+                            <p id="invalid-msg">Invalid Email or Password</p>
                         </ul>
                         </form>
                 </Modal>

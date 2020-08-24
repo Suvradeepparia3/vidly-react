@@ -20,8 +20,13 @@ class Dashboard extends Component {
         }
     }
     componentDidMount() {
+        const token = localStorage.getItem("x-auth-token")
         if(this.state.loggedIn === true){
-        axios.get('https://vidly-unique.herokuapp.com/api/rentals')
+        axios.get('https://vidly-unique.herokuapp.com/api/rentals', {
+            headers: {
+                'x-auth-token': `${token}`
+            }
+        })
         .then( response => {
             console.log(response)
             this.setState({rental: response.data})
@@ -73,6 +78,8 @@ class Dashboard extends Component {
                 </div>) :
                 null
             }
+
+            
             </div>
         );
     }

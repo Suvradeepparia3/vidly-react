@@ -20,8 +20,13 @@ class Customer extends Component {
         }
     }
     componentDidMount() {
+        const token = localStorage.getItem("x-auth-token")
         if(this.state.loggedIn === true){
-        axios.get('https://vidly-unique.herokuapp.com/api/customers')
+        axios.get('https://vidly-unique.herokuapp.com/api/customers', {
+            headers: {
+                'x-auth-token': `${token}`
+            }
+        })
         .then( response => {
             console.log(response)
             this.setState({posts: response.data})
