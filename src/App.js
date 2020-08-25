@@ -19,9 +19,10 @@ class App extends Component {
              render={(props) => (
                 <Dashboard {...props} 
                 title={"Dashboard"} 
-                name={"Name"} 
-                phone={"Phone No"} 
-                prime={"Subscribe"} />
+                name={"Customer name"} 
+                movie={"Movie name---(Rent/Day)"} 
+                date={"Booking date"} 
+                total={"Total cost"}/>
              )}
           />
           <Route
