@@ -51,7 +51,7 @@ class Dashboard extends Component {
         }
         
         return (
-            <div>
+            <div className="container-fluid">
                 <div className="row">
                     <div className="col-10">
                     <h1 className="cust-list">{this.props.title}</h1>
@@ -63,7 +63,7 @@ class Dashboard extends Component {
                 <div className="container">
               
                 <Table striped bordered hover variant="dark">
-                <thead>
+                <thead className="col-4 tb-header">
                     <tr>
                     <th>{this.props.name}</th>
                     <th>{this.props.movie}</th>
@@ -72,14 +72,14 @@ class Dashboard extends Component {
                     </tr>
                 </thead>
                 </Table>
-                {loading ? <div id="loading">Loading...</div> : <div>
+                {loading ? <div id="loading"><h4>Loading...</h4></div> : <div>
                 {
                 rental.length ?
                 rental.map(post => 
                 <div key={post._id}>
                     <div className="box">
                     <div className="row">
-                    <div className="col-3 col-style name">{post.customer.name}</div>
+                    <div className="col-3 col-style pd-l">{post.customer.name} ({post.customer.phone})</div>
                     <div className="col-5 col-style">{post.movie.title}---({post.movie.dailyRentalRate}$)</div> 
                     <div className="col-2 col-style">{post.dateOut.slice(0, 10)}</div>
                     <div className="col-2 col-style">{}</div> 
@@ -91,31 +91,6 @@ class Dashboard extends Component {
                </div>
                 } 
               </div>
-            
-                {/* <div className="container-fluid">
-                <div className="row">
-                    <div className="col-2 offset-2 name"><h4>{this.props.name}</h4></div>
-                    <div className="col-3"><h4>{this.props.movie}</h4></div>
-                    <div className="col-2"><h4>{this.props.date}</h4></div>
-                    <div className="col-2"><h4>{this.props.total}</h4></div>
-                </div>
-            </div><hr /> */}
-            {/* {
-                rental.length ?
-                rental.map(post => 
-                <div key={post._id}>
-                <div className="container-fluid">
-                    <div className="row">
-                    <div className="col-2 offset-2 name">{post.customer.name}</div>
-                    <div className="col-3">{post.movie.title}---({post.movie.dailyRentalRate}$)</div> 
-                    <div className="col-2">{post.dateOut.slice(0, 10)}</div>
-                    <div className="col-2">{}</div> </div>
-                </div>
-                </div>) :
-                null
-            } */}
-
-
             </div>
         );
     }

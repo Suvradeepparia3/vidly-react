@@ -31,8 +31,9 @@ class App extends Component {
                 <Movies {...props} 
                 title={"Movies list"} 
                  name={"Title"} 
-                Rate={"Rental Rate / Day"} 
-                Stock={"Stock"} />
+                 type={"Genre"}
+                rate={"Rental Rate / Day"} 
+                stock={"Stock"} />
              )}
           />
           <Route

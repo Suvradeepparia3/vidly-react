@@ -12,6 +12,8 @@ class Login extends Component {
         const token = localStorage.getItem("x-auth-token")
 
         let loggedIn = true
+        let loading = false
+        let invalidMsg = false
         if(token == null){
             loggedIn = false
         }
@@ -19,7 +21,9 @@ class Login extends Component {
             modalShow: false,
             email:'',
             password:'',
-            loggedIn
+            loggedIn,
+            loading,
+            invalidMsg
         }
         this.onChange = this.onChange.bind(this)
         this.submitForm = this.submitForm.bind(this)
@@ -33,8 +37,11 @@ class Login extends Component {
 
     submitForm(e){
         e.preventDefault()
+        this.setState({
+            loading: true,
+            invalidMsg: false
+        })
         const { email, password } = this.state
-
         axios.post('https://vidly-unique.herokuapp.com/api/auth', {email, password})
         .then( respone => {
             localStorage.setItem("x-auth-token", respone.headers['x-auth-token'])
@@ -44,7 +51,10 @@ class Login extends Component {
         })
         .catch ( error => {
             console.log(error)
-            document.getElementById("invalid-msg").style.display = "inline"  
+            this.setState({
+                loading: false,
+                invalidMsg: true
+            })
         })
         // TESTING PURPOSE
         // logic 
@@ -57,6 +67,7 @@ class Login extends Component {
     }
     
     render() {
+        const { loading, invalidMsg } = this.state
         if(this.state.loggedIn){
             return <Redirect to="/Dashboard" />
         }
@@ -76,7 +87,8 @@ class Login extends Component {
                             <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} /></li>
                             <li> <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange}/></li>
                             <li><input type="submit" /></li>
-                            <p id="invalid-msg">Invalid Email or Password</p>
+                            {loading ? <h5>Loading...</h5> : null }
+                            {invalidMsg ? <p id="invalid-msg">Invalid Email or Password</p> : null }
                         </ul>
                         </form>
                 </Modal>

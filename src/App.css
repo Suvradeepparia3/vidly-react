@@ -1,6 +1,44 @@
 .App {
   /* text-align: center; */
   height: 90vh;
+  /* background-color: gray; */
+  font-family: 'Inconsolata', monospace;
 }
 
+/*********** Style for auth component **************/
+.tb-header{
+  font-family: 'Architects Daughter', cursive;
+  font-size: 22px;
+}
+
+.cust-list{
+  text-align: left;
+  color: teal;
+  margin: 30px 0px 50px 30px;
+  font-family: 'Lobster', cursive;
+}
+.logOutButton{
+  padding: 35px 0px 50px 90px;
+}
+.box{
+  background-color: #292b2c;
+  color: white;
+  margin-top: -15px;
+  box-shadow: 10px 10px 50px 0px gray ;
+}
+.col-style{
+  /* text-align: center; */
+  height: 70px;
+  line-height: 65px;
+  /* border-right: 1px solid red; */
+}
+.pd-l{
+  padding-left:30px;
+}
+#loading{
+  margin-top: 120px;
+  width: 100%;
+  text-align: center;
+  display: flexbox;
+}
 

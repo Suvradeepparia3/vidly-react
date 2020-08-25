@@ -1,6 +1,6 @@
 .body{
     background-image: url('./assets/wallpaper.jpg');
-    height: 92.7vh;
+    height: 90.4vh;
     background-position: center;
     background-size: cover;
     filter: brightness(50%) blur(1px);
@@ -50,5 +50,5 @@ li{
 }
 #invalid-msg{
     color: red;
-    display: none;
+    display: inline;
 }

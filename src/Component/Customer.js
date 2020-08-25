@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 import './Customer.css';
@@ -10,13 +11,15 @@ class Customer extends Component {
         const token = localStorage.getItem("x-auth-token")
 
         let loggedIn = true
+        let loading = true
         if(token == null){
             loggedIn = false
         }
 
         this.state = {
             posts: [],
-            loggedIn
+            loggedIn,
+            loading
         }
     }
     componentDidMount() {
@@ -29,7 +32,7 @@ class Customer extends Component {
         })
         .then( response => {
             console.log(response)
-            this.setState({posts: response.data})
+            this.setState({loading: false, customer: response.data})
         })
         .catch( error => {
             console.log(error)
@@ -42,13 +45,13 @@ class Customer extends Component {
     }
 
     render(){
-        const { posts } = this.state
+        const { customer, loading } = this.state
         if(this.state.loggedIn === false){
             return <Redirect to="/" />
          }
         return (
-            <div>
-            <div className="row">
+            <div className="container-fluid">
+                <div className="row">
                     <div className="col-10">
                     <h1 className="cust-list">{this.props.title}</h1>
                     </div>
@@ -56,28 +59,37 @@ class Customer extends Component {
                     <Link to="/"><Button variant="primary" onClick={()=> {this.logOut()} }>Log Out</Button></Link>
                     </div>
                 </div><hr />
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-3 offset-3 name"><h4>{this.props.name}</h4></div>
-                    <div className="col-3"><h4>{this.props.phone}</h4></div>
-                    <div className="col-3"><h4>{this.props.prime}</h4></div>
-                </div>
-            </div><hr />
-            {
-                posts.length ?
-                posts.map(post => 
-                <div key={post._id}>
-                <div className="container-fluid">
+                <div className="container">
+              
+                <Table striped bordered hover variant="dark">
+                <thead>
+                    <tr>
                     <div className="row">
-                    <div className="col-3 offset-3 name">{post.name}</div>
-                    <div className="col-3">{post.phone}</div> 
-                    <div className="col-3">{post.isGold}</div>
+                    <div className="col-4 tb-header"><th>{this.props.name}</th></div>
+                    <div className="col-4 tb-header"><th>{this.props.phone}</th></div>
+                    <div className="col-4 tb-header"><th>{this.props.prime}</th></div>
                     </div>
-                </div>
-                </div>
-                ) :
+                    </tr>
+                </thead>
+                </Table>
+                {loading ? <div id="loading"><h4>Loading...</h4></div> : <div>
+                {
+                customer.length ?
+                customer.map(post => 
+                <div key={post._id}>
+                    <div className="box">
+                    <div className="row">
+                    <div className="col-4 col-style pd-l">{post.name}</div>
+                    <div className="col-4 col-style pd-l">{post.phone}</div> 
+                    <div className="col-4 col-style pd-l">{post.isGold}</div>
+                    </div>
+                    </div>
+                </div>) :
                 null
-            }
+                } 
+               </div>
+                } 
+              </div>
             </div>
         );
     }
