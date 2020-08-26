@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
-import './Dashboard.css';
+
 
 class Dashboard extends Component {
     constructor(props) {

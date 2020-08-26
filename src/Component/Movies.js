@@ -3,7 +3,7 @@ import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
-import './Movies.css';
+
 
 class Customer extends Component {
     constructor(props) {

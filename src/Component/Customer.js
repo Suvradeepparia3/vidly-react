@@ -3,7 +3,7 @@ import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
-import './Customer.css';
+
 
 class Customer extends Component {
     constructor(props) {
@@ -81,7 +81,10 @@ class Customer extends Component {
                     <div className="row">
                     <div className="col-4 col-style pd-l">{post.name}</div>
                     <div className="col-4 col-style pd-l">{post.phone}</div> 
-                    <div className="col-4 col-style pd-l">{post.isGold}</div>
+                    <div className="col-4 col-style pd-l" >
+                    { (post.isGold === 'true' &&
+                       <p>Gold</p>) || <p>Not Gold</p>
+                    }</div>
                     </div>
                     </div>
                 </div>) :
