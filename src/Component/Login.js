@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import Modal from 'react-modal';
 import './Login.css';
@@ -14,28 +14,32 @@ class Login extends Component {
         let loggedIn = true
         let loading = false
         let invalidMsg = false
+        let createAccount = false
         if(token == null){
             loggedIn = false
         }
         this.state = {
-            modalShow: false,
+            name: '',
             email:'',
             password:'',
             loggedIn,
             loading,
-            invalidMsg
+            invalidMsg,
+            createAccount
         }
-        this.onChange = this.onChange.bind(this)
-        this.submitForm = this.submitForm.bind(this)
+        this.onLogin = this.onLogin.bind(this)
+        this.onSignup = this.onSignup.bind(this)
+        this.submitLoginForm = this.submitLoginForm.bind(this)
+        this.submitSignupForm = this.submitSignupForm.bind(this)
     }
 
-    onChange(e){
+    onLogin(e){
         this.setState({
             [e.target.name]: e.target.value
         })
     }
 
-    submitForm(e){
+    submitLoginForm(e){
         e.preventDefault()
         this.setState({
             loading: true,
@@ -56,18 +60,39 @@ class Login extends Component {
                 invalidMsg: true
             })
         })
-        // TESTING PURPOSE
-        // logic 
-        // if(email === "A" && password === "B"){
-        //     localStorage.setItem("token", "uyiwsgdfeswdiuovgedfiouvhgew")
-        //     this.setState({
-        //         loggedIn:true
-        //     })
-        // }
+    }
+
+    onSignup(e){
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    submitSignupForm(e){
+        e.preventDefault()
+        this.setState({
+            loading: true,
+            createAccount: false
+        })
+        const { name, email, password } = this.state
+        console.log(email, password)
+        axios.post('https://vidly-unique.herokuapp.com/api/users', {name, email, password})
+        .then( response => {
+            console.log(response)
+            this.setState({
+                createAccount: true
+            })
+        })
+        .catch ( error => {
+            console.log(error)
+            this.setState({
+                loading: false
+            })
+        })
     }
     
     render() {
-        const { loading, invalidMsg } = this.state
+        const { loading, invalidMsg, createAccount } = this.state
         if(this.state.loggedIn){
             return <Redirect to="/Dashboard" />
         }
@@ -75,20 +100,37 @@ class Login extends Component {
             <div>
                 <div className="body"></div>
                 <div className="content">
-                <Button variant="success login" onClick={()=> {this.setState({modalShow:true})}}>Log In</Button>
-                <Link to="/Dashboard"><Button variant="primary signup">Sign Up</Button></Link>
+                <Button variant="success login" onClick={()=> {this.setState({loginModalShow:true})}}>Log In</Button>
+                <Button variant="primary signup" onClick={()=> {this.setState({signupModalShow:true})}}>Sign Up</Button>
                 </div>
 
-                <Modal isOpen={this.state.modalShow} 
-                       onRequestClose={() => {this.setState({modalShow:false})}} 
+                {/* ********** For Login Modal ********* */}
+                <Modal isOpen={this.state.loginModalShow} 
+                       onRequestClose={() => {this.setState({loginModalShow:false})}} 
                        className="pop-content">
-                        <form onSubmit={this.submitForm}>
+                        <form onSubmit={this.submitLoginForm}>
                         <ul>
-                            <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} /></li>
-                            <li> <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange}/></li>
+                            <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onLogin} /></li>
+                            <li> <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onLogin}/></li>
                             <li><input type="submit" /></li>
                             {loading ? <h5>Loading...</h5> : null }
                             {invalidMsg ? <p id="invalid-msg">Invalid Email or Password</p> : null }
+                        </ul>
+                        </form>
+                </Modal>
+
+                  {/* ********** For Signup Modal ********* */}
+                <Modal isOpen={this.state.signupModalShow} 
+                       onRequestClose={() => {this.setState({signupModalShow:false})}} 
+                       className="pop-content">
+                        <form onSubmit={this.submitSignupForm}>
+                        <ul>
+                            <li><input type="text" placeholder="Your name" name="name" value={this.state.name} onChange={this.onSignup} /></li>
+                            <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onSignup} /></li>
+                            <li> <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onSignup}/></li>
+                            <li><input type="submit" /></li>
+                            {loading ? <h5>Loading...</h5> : null }
+                            {createAccount ? <p id="invalid-msg">You have created an account.</p> : null }
                         </ul>
                         </form>
                 </Modal>

@@ -31,7 +31,7 @@
 .pop-content{
     height: 250px;
     width: 500px;
-    background: #fff;
+    background: rgb(135, 150, 106);
     padding: 20px;
     border-radius: 5px;
     position: relative;
@@ -47,6 +47,15 @@ ul{
 }
 li{
     margin-bottom: 20px;
+}
+input {
+    border-radius: 5px;
+    border:none;
+    height: 33px;
+}
+input[type=submit]{
+    background-color: green;
+    color: honeydew;
 }
 #invalid-msg{
     color: red;
