@@ -80,19 +80,21 @@ class Login extends Component {
         .then( response => {
             console.log(response)
             this.setState({
+                loading: false,
                 createAccount: true
             })
         })
         .catch ( error => {
-            console.log(error)
+            console.log('response: ', error.response.data);
             this.setState({
-                loading: false
+                loading: false,
+                msg: error.response.data
             })
         })
     }
     
     render() {
-        const { loading, invalidMsg, createAccount } = this.state
+        const { loading, invalidMsg, createAccount, msg } = this.state
         if(this.state.loggedIn){
             return <Redirect to="/Dashboard" />
         }
@@ -110,8 +112,8 @@ class Login extends Component {
                        className="pop-content">
                         <form onSubmit={this.submitLoginForm}>
                         <ul>
-                            <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onLogin} /></li>
-                            <li> <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onLogin}/></li>
+                            <li><input type="text" placeholder="Email" required name="email" value={this.state.email} onChange={this.onLogin} /></li>
+                            <li> <input type="password" placeholder="Password" minLength="8" required name="password" value={this.state.password} onChange={this.onLogin}/></li>
                             <li><input type="submit" /></li>
                             {loading ? <h5>Loading...</h5> : null }
                             {invalidMsg ? <p id="invalid-msg">Invalid Email or Password</p> : null }
@@ -125,12 +127,13 @@ class Login extends Component {
                        className="pop-content">
                         <form onSubmit={this.submitSignupForm}>
                         <ul>
-                            <li><input type="text" placeholder="Your name" name="name" value={this.state.name} onChange={this.onSignup} /></li>
+                            <li><input type="text" placeholder="Your name" minLength="5" required name="name" value={this.state.name} onChange={this.onSignup} /></li>
                             <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onSignup} /></li>
-                            <li> <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onSignup}/></li>
+                            <li><input type="password" placeholder="Password" name="password" minLength="8" required value={this.state.password} onChange={this.onSignup}/></li>
                             <li><input type="submit" /></li>
                             {loading ? <h5>Loading...</h5> : null }
-                            {createAccount ? <p id="invalid-msg">You have created an account.</p> : null }
+                            {createAccount ? <h4>You have created an account.</h4> : null }
+                            <div id="invalid-msg">{msg}</div>
                         </ul>
                         </form>
                 </Modal>

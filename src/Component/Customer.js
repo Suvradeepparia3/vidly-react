@@ -17,7 +17,7 @@ class Customer extends Component {
         }
 
         this.state = {
-            posts: [],
+            customer: [],
             loggedIn,
             loading
         }
