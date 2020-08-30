@@ -3,6 +3,7 @@ import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
+import Modal from 'react-modal';
 
 
 class Customer extends Component {
@@ -54,6 +55,7 @@ class Customer extends Component {
                 <div className="row">
                     <div className="col-10">
                     <h1 className="cust-list">{this.props.title}</h1>
+                    <Button variant="primary addButton" onClick={()=> {this.setState({addCustomerShow:true})}}>Add Customer</Button>
                     </div>
                     <div className="col-2 logOutButton">
                     <Link to="/"><Button variant="primary" onClick={()=> {this.logOut()} }>Log Out</Button></Link>
@@ -72,6 +74,21 @@ class Customer extends Component {
                     </tr>
                 </thead>
                 </Table>
+                <Modal isOpen={this.state.addCustomerShow} 
+                       onRequestClose={() => {this.setState({addCustomerShow:false})}} 
+                       className="pop-content">
+                        <form onSubmit={this.submitSignupForm}>
+                        <ul>
+                            <li><input type="text" placeholder="Your name" minLength="5" required name="name" value={this.state.name} onChange={this.onSignup} /></li>
+                            <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onSignup} /></li>
+                            <li><input type="password" placeholder="Password" name="password" minLength="8" required value={this.state.password} onChange={this.onSignup}/></li>
+                            <li><input type="submit" /></li>
+                            {/* {loading ? <h5>Loading...</h5> : null }
+                            {createAccount ? <h4>You have created an account.</h4> : null }
+                            <div id="invalid-msg">{msg}</div> */}
+                        </ul>
+                        </form>
+                </Modal>
                 {loading ? <div id="loading"><h4>Loading...</h4></div> : <div>
                 {
                 customer.length ?
