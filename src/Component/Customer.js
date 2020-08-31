@@ -12,17 +12,21 @@ class Customer extends Component {
         const token = localStorage.getItem("x-auth-token")
 
         let loggedIn = true
-        let loading = true
+        let loadingCustomerList = true
+        let loading = false
+        let createCustomer = false
+        let errorMsg = false
         if(token == null){
             loggedIn = false
         }
 
         this.state = {
-            customer: [],
-            loggedIn,
-            loading
+            customer: [], loggedIn, loadingCustomerList, loading, createCustomer, errorMsg, name: '', phoneNo: '', subscribe: ''
         }
+        this.addCustomer = this.addCustomer.bind(this)
+        this.submitAddCustomerForm = this.submitAddCustomerForm.bind(this)
     }
+
     componentDidMount() {
         const token = localStorage.getItem("x-auth-token")
         if(this.state.loggedIn === true){
@@ -33,7 +37,7 @@ class Customer extends Component {
         })
         .then( response => {
             console.log(response)
-            this.setState({loading: false, customer: response.data})
+            this.setState({loadingCustomerList: false, customer: response.data})
         })
         .catch( error => {
             console.log(error)
@@ -45,8 +49,32 @@ class Customer extends Component {
         localStorage.removeItem("x-auth-token")
     }
 
+    addCustomer(e){
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    submitAddCustomerForm(e){
+        e.preventDefault()
+        const { name, phoneNo, subscribe} =this.state
+        console.log(name, phoneNo, subscribe)
+        this.setState({
+            loading: true
+        })
+        axios.post('https://vidly-unique.herokuapp.com/api/customers', {name, phoneNo, subscribe})
+        .then( response => {
+            console.log(response)
+            this.setState({ loading: false, createCustomer: true })
+        })
+        .catch( error => {
+            console.log(error)
+            this.setState({ loading: false, errorMsg: true })
+        })
+    }
+
     render(){
-        const { customer, loading } = this.state
+        const { customer, loading, loadingCustomerList, errorMsg, createCustomer } = this.state
         if(this.state.loggedIn === false){
             return <Redirect to="/" />
          }
@@ -74,22 +102,30 @@ class Customer extends Component {
                     </tr>
                 </thead>
                 </Table>
+               
                 <Modal isOpen={this.state.addCustomerShow} 
                        onRequestClose={() => {this.setState({addCustomerShow:false})}} 
                        className="pop-content">
-                        <form onSubmit={this.submitSignupForm}>
+                        <form onSubmit={this.submitAddCustomerForm}>
                         <ul>
-                            <li><input type="text" placeholder="Your name" minLength="5" required name="name" value={this.state.name} onChange={this.onSignup} /></li>
-                            <li><input type="text" placeholder="Email" name="email" value={this.state.email} onChange={this.onSignup} /></li>
-                            <li><input type="password" placeholder="Password" name="password" minLength="8" required value={this.state.password} onChange={this.onSignup}/></li>
+                            <li><input type="text" placeholder="Name" required name="name" value={this.state.name} onChange={this.addCustomer} /></li>     
+                            <li><input type="number" placeholder="Phone No" name="phoneNo" value={this.state.phoneNo} onChange={this.addCustomer} /></li>
+                            {/* <li><input type="text" placeholder="Subscription" name="subscribe" value={this.state.subscribe} onChange={this.addCustomer} /></li> */}
+                            <label htmlFor="subscribe" style={{color: "white", margin: "0px 10px 20px 0px"}}>Subscription:</label>
+                            <select id="subscribe" name="subscribe" onChange={this.addCustomer} required>
+                                    <option value="" >---</option>
+                                    <option value="true" >Gold</option>
+                                    <option value="false">Not Gold</option>
+                            </select>
                             <li><input type="submit" /></li>
-                            {/* {loading ? <h5>Loading...</h5> : null }
-                            {createAccount ? <h4>You have created an account.</h4> : null }
-                            <div id="invalid-msg">{msg}</div> */}
+                            {loading ? <h5>Loading...</h5> : null }
+                            {createCustomer ? <h4>You have created a new Customer.</h4> : null }
+                            {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
+                            {/* <div id="invalid-msg">{msg}</div>  */}
                         </ul>
                         </form>
                 </Modal>
-                {loading ? <div id="loading"><h4>Loading...</h4></div> : <div>
+                {loadingCustomerList ? <div id="loading"><h4>Loading...</h4></div> : <div>
                 {
                 customer.length ?
                 customer.map(post => 
@@ -116,4 +152,4 @@ class Customer extends Component {
 }
 
 
-export default Customer;
+export default Customer;      
