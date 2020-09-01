@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
-import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
 
@@ -62,17 +61,15 @@ class Dashboard extends Component {
                 </div><hr />
                 <div className="container">
               
-                <Table striped bordered hover variant="dark">
-                <thead className="col-4 tb-header">
-                    <tr>
-                    <th>{this.props.name}</th>
-                    <th>{this.props.movie}</th>
-                    <th>{this.props.date}</th>
-                    <th>{this.props.total}</th>
-                    </tr>
-                </thead>
-                </Table>
-                {loading ? <div id="loading"><h4>Loading...</h4></div> : <div>
+                <div className="container list-header">
+                <div className="row">
+                    <div className="col-3 header-component">{this.props.name}</div>
+                    <div className="col-5 header-component pd-l">{this.props.movie}</div>
+                    <div className="col-2 header-component">{this.props.date}</div>
+                    <div className="col-2 header-component">{this.props.total}</div>
+                </div>
+                </div>
+                {loading ? <div id="loading"><h4>Loading...</h4></div> : <div className="data">
                 {
                 rental.length ?
                 rental.map(post => 
@@ -80,8 +77,8 @@ class Dashboard extends Component {
                     <div className="box">
                     <div className="row">
                     <div className="col-3 col-style pd-l">{post.customer.name} ({post.customer.phone})</div>
-                    <div className="col-5 col-style">{post.movie.title}---({post.movie.dailyRentalRate}$)</div> 
-                    <div className="col-2 col-style">{post.dateOut.slice(0, 10)}</div>
+                    <div className="col-5 col-style pd-l">{post.movie.title}---({post.movie.dailyRentalRate}$)</div> 
+                    <div className="col-2 col-style pd-l">{post.dateOut.slice(0, 10)}</div>
                     <div className="col-2 col-style">{}</div> 
                     </div>
                     </div>

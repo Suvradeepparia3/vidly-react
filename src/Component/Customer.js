@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 import Modal from 'react-modal';
@@ -90,49 +89,22 @@ class Customer extends Component {
                     </div>
                 </div><hr />
                 <div className="container">
-              
-                <Table striped bordered hover variant="dark">
-                <thead>
-                    <tr>
+                    <div className="container list-header">
                     <div className="row">
-                    <div className="col-4 tb-header"><th>{this.props.name}</th></div>
-                    <div className="col-4 tb-header"><th>{this.props.phone}</th></div>
-                    <div className="col-4 tb-header"><th>{this.props.prime}</th></div>
+                    <div className="col-4 header-component">{this.props.name}</div>
+                    <div className="col-4 header-component">{this.props.phone}</div>
+                    <div className="col-4 header-component">{this.props.prime}</div>
                     </div>
-                    </tr>
-                </thead>
-                </Table>
-               
-                <Modal isOpen={this.state.addCustomerShow} 
-                       onRequestClose={() => {this.setState({addCustomerShow:false})}} 
-                       className="pop-content">
-                        <form onSubmit={this.submitAddCustomerForm}>
-                        <ul>
-                            <li><input type="text" placeholder="Name" required name="name" value={this.state.name} onChange={this.addCustomer} /></li>     
-                            <li><input type="number" placeholder="Phone No" name="phoneNo" value={this.state.phoneNo} onChange={this.addCustomer} /></li>
-                            {/* <li><input type="text" placeholder="Subscription" name="subscribe" value={this.state.subscribe} onChange={this.addCustomer} /></li> */}
-                            <label htmlFor="subscribe" style={{color: "white", margin: "0px 10px 20px 0px"}}>Subscription:</label>
-                            <select id="subscribe" name="subscribe" onChange={this.addCustomer} required>
-                                    <option value="" >---</option>
-                                    <option value="true" >Gold</option>
-                                    <option value="false">Not Gold</option>
-                            </select>
-                            <li><input type="submit" /></li>
-                            {loading ? <h5>Loading...</h5> : null }
-                            {createCustomer ? <h4>You have created a new Customer.</h4> : null }
-                            {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
-                            {/* <div id="invalid-msg">{msg}</div>  */}
-                        </ul>
-                        </form>
-                </Modal>
-                {loadingCustomerList ? <div id="loading"><h4>Loading...</h4></div> : <div>
+                    </div>
+            
+                {loadingCustomerList ? <div id="loading"><h4>Loading...</h4></div> : <div className="data">
                 {
                 customer.length ?
                 customer.map(post => 
                 <div key={post._id}>
                     <div className="box">
                     <div className="row">
-                    <div className="col-4 col-style pd-l">{post.name}</div>
+                    <div className="col-4 col-style pd-l"><Button onClick={() => alert(post._id)}>{post.name}</Button></div>
                     <div className="col-4 col-style pd-l">{post.phone}</div> 
                     <div className="col-4 col-style pd-l" >
                     { (post.isGold === 'true' &&
@@ -146,6 +118,29 @@ class Customer extends Component {
                </div>
                 } 
               </div>
+
+              <Modal isOpen={this.state.addCustomerShow} 
+                       onRequestClose={() => {this.setState({addCustomerShow:false})}} 
+                       ariaHideApp={false}
+                       className="pop-content">
+                        <form onSubmit={this.submitAddCustomerForm}>
+                        <ul>
+                            <li><input type="text" placeholder="Name" required name="name" value={this.state.name} onChange={this.addCustomer} /></li>     
+                            <li><input type="number" placeholder="Phone No" name="phoneNo" value={this.state.phoneNo} onChange={this.addCustomer} /></li>
+                            <label htmlFor="subscribe" style={{color: "white", margin: "0px 10px 20px 0px"}}>Subscription:</label>
+                            <select id="subscribe" name="subscribe" onChange={this.addCustomer} required>
+                                    <option value="" >---</option>
+                                    <option value="true" >Gold</option>
+                                    <option value="false">Not Gold</option>
+                            </select>
+                            <li><input type="submit" /></li>
+                            {loading ? <h5>Loading...</h5> : null }
+                            {createCustomer ? <h4>You have created a new Customer.</h4> : null }
+                            {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
+                        </ul>
+                        </form>
+                </Modal>
+
             </div>
         );
     }

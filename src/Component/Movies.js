@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 
@@ -60,27 +59,23 @@ class Customer extends Component {
                     </div>
                 </div><hr />
                 <div className="container">
-              
-                <Table striped bordered hover variant="dark">
-                <thead>
-                    <tr>
+                <div className="container list-header">
                     <div className="row">
-                    <div className="col-4 tb-header"><th>{this.props.name}</th></div>
-                    <div className="col-3 tb-header"><th>{this.props.type}</th></div>
-                    <div className="col-3 tb-header"><th>{this.props.rate}</th></div>
-                    <div className="col-2 tb-header"><th>{this.props.stock}</th></div>
+                    <div className="col-4 header-component">{this.props.name}</div>
+                    <div className="col-3 header-component">{this.props.type}</div>
+                    <div className="col-3 header-component">{this.props.rate}</div>
+                    <div className="col-2 header-component">{this.props.stock}</div>
                     </div>
-                    </tr>
-                </thead>
-                </Table>
-                {loading ? <div id="loading"><h4>Loading...</h4></div> : <div>
+                </div>
+                {loading ? <div id="loading"><h4>Loading...</h4></div>
+                : <div className="data">
                 {
                 movies.length ?
                 movies.map(post => 
                 <div key={post._id}>
                     <div className="box">
                     <div className="row">
-                    <div className="col-4 col-style pd-l">{post.title}</div>
+                    <div className="col-4 col-style pd-l"><Button onClick={()=> alert(post._id)}>{post.title}</Button></div>
                     <div className="col-4 col-style pd-l">{post.genre.name}</div> 
                     <div className="col-2 col-style">{post.dailyRentalRate}$</div>
                     <div className="col-2 col-style pd-l">{post.numberInStock}</div> 

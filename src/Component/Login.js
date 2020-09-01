@@ -109,6 +109,7 @@ class Login extends Component {
                 {/* ********** For Login Modal ********* */}
                 <Modal isOpen={this.state.loginModalShow} 
                        onRequestClose={() => {this.setState({loginModalShow:false})}} 
+                       ariaHideApp={false}
                        className="pop-content">
                         <form onSubmit={this.submitLoginForm}>
                         <ul>
@@ -124,6 +125,7 @@ class Login extends Component {
                   {/* ********** For Signup Modal ********* */}
                 <Modal isOpen={this.state.signupModalShow} 
                        onRequestClose={() => {this.setState({signupModalShow:false})}} 
+                       ariaHideApp={false}
                        className="pop-content">
                         <form onSubmit={this.submitSignupForm}>
                         <ul>
