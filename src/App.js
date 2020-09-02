@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import Home from './Component/Home';
 import Login from './Component/Login';
-import Customer from './Component/Customer';
-import Movies from './Component/Movies';
 import Dashboard from './Component/Dashboard';
 import { BrowserRouter, Route } from 'react-router-dom';
+import ShopDetails from './Component/ShopDetails';
 
 class App extends Component {
   render(){
@@ -25,27 +24,20 @@ class App extends Component {
                 total={"Total cost"}/>
              )}
           />
+          
           <Route
              path='/Movies'
-             render={(props) => (
-                <Movies {...props} 
-                title={"Movies list"} 
-                 name={"Title"} 
-                 type={"Genre"}
-                rate={"Rental Rate / Day"} 
-                stock={"Stock"} />
+             render={() => (
+               <ShopDetails />
              )}
           />
           <Route
              path='/Customer'
-             render={(props) => (
-                <Customer {...props} 
-                title={"Customers list"} 
-                name={"Name"} 
-                phone={"Phone No"} 
-                prime={"Subscribe"} />
+             render={() => (
+               <ShopDetails />
              )}
           />
+         
       </div>
        </BrowserRouter>
     );

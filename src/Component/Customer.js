@@ -44,10 +44,6 @@ class Customer extends Component {
         }
     }
 
-    logOut(){
-        localStorage.removeItem("x-auth-token")
-    }
-
     addCustomer(e){
         this.setState({
             [e.target.name]: e.target.value
@@ -72,6 +68,10 @@ class Customer extends Component {
         })
     }
 
+    logOut(){
+        localStorage.removeItem("x-auth-token")
+    }
+
     render(){
         const { customer, loading, loadingCustomerList, errorMsg, createCustomer } = this.state
         if(this.state.loggedIn === false){
@@ -85,7 +85,7 @@ class Customer extends Component {
                     <Button variant="primary addButton" onClick={()=> {this.setState({addCustomerShow:true})}}>Add Customer</Button>
                     </div>
                     <div className="col-2 logOutButton">
-                    <Link to="/"><Button variant="primary" onClick={()=> {this.logOut()} }>Log Out</Button></Link>
+                    <Link to="/"><Button variant="primary" onClick={()=> this.logOut()}>Log Out</Button></Link>
                     </div>
                 </div><hr />
                 <div className="container">
