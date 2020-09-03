@@ -48,7 +48,7 @@ class Customer extends Component {
                     <div className="col-3 header-component">{this.props.type}</div>
                     <div className="col-3 header-component">{this.props.rate}</div>
                     <div className="col-2 header-component">{this.props.stock}</div>
-                    </div>
+                    </div> 
                 </div>
                 { loading ? <div id="loading"><h4>Loading...</h4></div>
                 : <div className="data">
