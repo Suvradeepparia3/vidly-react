@@ -53,4 +53,28 @@
   text-align: center;
   display: flexbox;
 }
-
+div.list {
+  background-color: white;
+  width: 170px;
+  height: 120px;
+  overflow: auto;
+  border-radius: 9px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+.selection{
+  float: right;
+}
+.selectedItem{
+  float: left;
+}
+.selected{
+  font-family: 'Inconsolata', monospace;
+  color: antiquewhite;
+  width: 130px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 25px;
+  font-size: 17px;
+}

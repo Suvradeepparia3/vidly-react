@@ -1,48 +1,30 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 
 
 class Customer extends Component {
     constructor(props) {
         super(props);
-        const token = localStorage.getItem("x-auth-token")
 
-        let loggedIn = true
-        let loadingCustomerList = true
-        let loading = false
+        let loadingCreateCustomer = false
         let createCustomer = false
         let errorMsg = false
-        if(token == null){
-            loggedIn = false
-        }
 
         this.state = {
-            customer: [], loggedIn, loadingCustomerList, loading, createCustomer, errorMsg, name: '', phoneNo: '', subscribe: ''
+            loadingCreateCustomer, 
+            createCustomer, 
+            errorMsg, 
+            name: '', 
+            phoneNo: '', 
+            subscribe: ''
         }
         this.addCustomer = this.addCustomer.bind(this)
         this.submitAddCustomerForm = this.submitAddCustomerForm.bind(this)
     }
 
-    componentDidMount() {
-        const token = localStorage.getItem("x-auth-token")
-        if(this.state.loggedIn === true){
-        axios.get('https://vidly-unique.herokuapp.com/api/customers', {
-            headers: {
-                'x-auth-token': `${token}`
-            }
-        })
-        .then( response => {
-            console.log(response)
-            this.setState({loadingCustomerList: false, customer: response.data})
-        })
-        .catch( error => {
-            console.log(error)
-        })
-        }
-    }
 
     addCustomer(e){
         this.setState({
@@ -53,18 +35,17 @@ class Customer extends Component {
     submitAddCustomerForm(e){
         e.preventDefault()
         const { name, phoneNo, subscribe} =this.state
-        console.log(name, phoneNo, subscribe)
         this.setState({
-            loading: true
+            loadingCreateCustomer: true
         })
         axios.post('https://vidly-unique.herokuapp.com/api/customers', {name, phoneNo, subscribe})
         .then( response => {
             console.log(response)
-            this.setState({ loading: false, createCustomer: true })
+            this.setState({ loadingCreateCustomer: false, createCustomer: true })
         })
         .catch( error => {
             console.log(error)
-            this.setState({ loading: false, errorMsg: true })
+            this.setState({ loadingCreateCustomer: false, errorMsg: true })
         })
     }
 
@@ -73,10 +54,16 @@ class Customer extends Component {
     }
 
     render(){
-        const { customer, loading, loadingCustomerList, errorMsg, createCustomer } = this.state
-        if(this.state.loggedIn === false){
-            return <Redirect to="/" />
-         }
+        const { loadingCreateCustomer, errorMsg, createCustomer } = this.state
+        const { customer, loadingCustomerList, movies } = this.props
+        const movieNameList = movies.map(name => {
+            return(
+                <div key={name._id}>
+                <Button variant="light" size="sm" 
+                onClick={() => document.getElementById('selectedBook').innerHTML = name.title } >{name.title} </Button>
+                </div>
+            )
+        })
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -104,7 +91,8 @@ class Customer extends Component {
                 <div key={post._id}>
                     <div className="box">
                     <div className="row">
-                    <div className="col-4 col-style pd-l"><Button onClick={() => alert(post._id)}>{post.name}</Button></div>
+                    <div className="col-4 col-style pd-l">
+                    <Button onClick={() => {this.setState({addMovieName:true, selectedCustomer: post.name})}}>{post.name}</Button></div>
                     <div className="col-4 col-style pd-l">{post.phone}</div> 
                     <div className="col-4 col-style pd-l" >
                     { (post.isGold === 'true' &&
@@ -134,13 +122,39 @@ class Customer extends Component {
                                     <option value="false">Not Gold</option>
                             </select>
                             <li><input type="submit" /></li>
-                            {loading ? <h5>Loading...</h5> : null }
+                            {loadingCreateCustomer ? <h5>Loading...</h5> : null }
                             {createCustomer ? <h4>You have created a new Customer.</h4> : null }
                             {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
                         </ul>
                         </form>
                 </Modal>
 
+                <Modal isOpen={this.state.addMovieName} 
+                    onRequestClose={() => {this.setState({addMovieName:false})}} 
+                    ariaHideApp={false}
+                    className="pop-content">
+                    <form onSubmit={this.submitAddCustomerForm}>
+
+                       <div className="selectedItem">
+                       <h3>Selected customer</h3> 
+                       <div className="selected">{this.state.selectedCustomer}</div>
+                       <h3>Selected movie</h3> 
+                       <div className="selected" id="selectedBook"></div>
+                       </div>
+                        
+                        <div className="selection">
+                        <h3 >Choose movie</h3>
+                        <div className="list">{movieNameList}</div>
+                        <input type="submit" />
+                        </div>
+            
+                        
+                        {/* {loading ? <h5>Loading...</h5> : null }
+                        {createCustomer ? <h4>You have created a new Customer.</h4> : null }
+                        {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null } */}
+                    
+                    </form>
+                </Modal>
             </div>
         );
     }
