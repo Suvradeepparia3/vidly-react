@@ -12,17 +12,24 @@ class Customer extends Component {
         let loadingCreateCustomer = false
         let createCustomer = false
         let errorMsg = false
+        let loadingAddRental = false
+        let createRental = false
 
         this.state = {
-            loadingCreateCustomer, 
-            createCustomer, 
+            loadingCreateCustomer,
+            loadingAddRental, 
+            createCustomer,
+            createRental, 
             errorMsg, 
             name: '', 
             phoneNo: '', 
-            subscribe: ''
+            subscribe: '',
+            bookId:'',
+            customerId:''
         }
         this.addCustomer = this.addCustomer.bind(this)
         this.submitAddCustomerForm = this.submitAddCustomerForm.bind(this)
+        this.submitAddRentalForm = this.submitAddRentalForm.bind(this)
     }
 
 
@@ -34,7 +41,8 @@ class Customer extends Component {
 
     submitAddCustomerForm(e){
         e.preventDefault()
-        const { name, phoneNo, subscribe} =this.state
+        const { name, phoneNo, subscribe} = this.state
+        console.log(name, phoneNo, subscribe)
         this.setState({
             loadingCreateCustomer: true
         })
@@ -49,18 +57,47 @@ class Customer extends Component {
         })
     }
 
+    submitAddRentalForm(e){
+        e.preventDefault()
+        const token = localStorage.getItem("x-auth-token")
+        const { bookId, customerId } = this.state
+        this.setState({
+            loadingAddRental: true
+        })
+        console.log(bookId, customerId, token)
+        axios.post('https://vidly-unique.herokuapp.com/api/rentals', { bookId, customerId },
+        {
+            headers: {
+                'x-auth-token': `${token}`
+            }
+        })
+        .then( response => {
+            console.log(response)
+            this.setState({loadingAddRental: false, createRental: true})
+        })
+        .catch( error => {
+            console.log(error)
+            this.setState({ loadingAddRental: false, errorMsg: true })
+        })
+    }
+
+    selectedBook(title){
+        document.getElementById('selectedBook').innerHTML = title
+    }
+
     logOut(){
         localStorage.removeItem("x-auth-token")
     }
 
     render(){
-        const { loadingCreateCustomer, errorMsg, createCustomer } = this.state
+        const { loadingCreateCustomer, errorMsg, createCustomer, loadingAddRental, createRental } = this.state
         const { customer, loadingCustomerList, movies } = this.props
         const movieNameList = movies.map(name => {
             return(
                 <div key={name._id}>
                 <Button variant="light" size="sm" 
-                onClick={() => document.getElementById('selectedBook').innerHTML = name.title } >{name.title} </Button>
+                onClick={() =>  {this.setState({bookId: name._id}, this.selectedBook(name.title) )}}>
+                {name.title} </Button>
                 </div>
             )
         })
@@ -92,7 +129,10 @@ class Customer extends Component {
                     <div className="box">
                     <div className="row">
                     <div className="col-4 col-style pd-l">
-                    <Button onClick={() => {this.setState({addMovieName:true, selectedCustomer: post.name})}}>{post.name}</Button></div>
+                    <Button 
+                    onClick={() => 
+                    {this.setState({addMovieName:true, selectedCustomer: post.name, customerId: post._id})}}>
+                    {post.name}</Button></div>
                     <div className="col-4 col-style pd-l">{post.phone}</div> 
                     <div className="col-4 col-style pd-l" >
                     { (post.isGold === 'true' &&
@@ -133,7 +173,7 @@ class Customer extends Component {
                     onRequestClose={() => {this.setState({addMovieName:false})}} 
                     ariaHideApp={false}
                     className="pop-content">
-                    <form onSubmit={this.submitAddCustomerForm}>
+                    <form onSubmit={this.submitAddRentalForm}>
 
                        <div className="selectedItem">
                        <h3>Selected customer</h3> 
@@ -149,9 +189,9 @@ class Customer extends Component {
                         </div>
             
                         
-                        {/* {loading ? <h5>Loading...</h5> : null }
-                        {createCustomer ? <h4>You have created a new Customer.</h4> : null }
-                        {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null } */}
+                        {loadingAddRental ? <h5>Loading...</h5> : null }
+                        {createRental ? <h4>Successful. Go to Dashboard.</h4> : null }
+                        {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
                     
                     </form>
                 </Modal>

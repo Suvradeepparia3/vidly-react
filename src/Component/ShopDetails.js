@@ -75,7 +75,7 @@ class ShopDetails extends Component {
                 rate={"Rental Rate / Day"} 
                 stock={"Stock"} 
                 movies={this.state.movies}
-                customer={this.state.customer}
+                // customer={this.state.customer}
                 loading={this.state.loading}/>
              )}
             />

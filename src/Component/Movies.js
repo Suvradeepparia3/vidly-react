@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 
 class Customer extends Component {
-    constructor(props) {
-        super(props);
+    // constructor(props) {
+    //     super(props);
         
-        let addCustomerName = false
-        this.state = {
-            addCustomerName
-        }
+    //     let addCustomerName = false
+    //     this.state = {
+    //         addCustomerName
+    //     }
 
-    }
+    // }
 
     logOut(){
         localStorage.removeItem("x-auth-token")
@@ -21,14 +21,14 @@ class Customer extends Component {
 
     render(){
         const { movies, loading, customer } = this.props
-        const customerNameList = customer.map(name => {
-            return(
-                <div key={name._id}>
-                <Button variant="light" size="sm" 
-                onClick={() => document.getElementById('selectedCustomer').innerHTML = name.name } >{name.name} </Button>
-                </div>
-            )
-        })
+        // const customerNameList = customer.map(name => {
+        //     return(
+        //         <div key={name._id}>
+        //         <Button variant="light" size="sm" 
+        //         onClick={() => document.getElementById('selectedCustomer').innerHTML = name.name } >{name.name} </Button>
+        //         </div>
+        //     )
+        // })
     
             return (
                 <div className="container-fluid">
@@ -59,7 +59,7 @@ class Customer extends Component {
                     <div className="box">
                     <div className="row">
                     <div className="col-4 col-style pd-l">
-                    <Button onClick={()=> {this.setState({addCustomerName:true, selectedBook: post.title})}}>{post.title}</Button></div>
+                    <Button >{/*onClick={()=> {this.setState({addCustomerName:true, selectedBook: post.title})}} */} {post.title}</Button></div>
                     <div className="col-4 col-style pd-l">{post.genre.name}</div> 
                     <div className="col-2 col-style">{post.dailyRentalRate}$</div>
                     <div className="col-2 col-style pd-l">{post.numberInStock}</div> 
@@ -72,7 +72,7 @@ class Customer extends Component {
                 } 
               </div>
 
-              <Modal isOpen={this.state.addCustomerName} 
+              {/* <Modal isOpen={this.state.addCustomerName} 
                     onRequestClose={() => {this.setState({addCustomerName:false})}} 
                     ariaHideApp={false}
                     className="pop-content">
@@ -92,12 +92,12 @@ class Customer extends Component {
                         </div>
             
                         
-                        {/* {loading ? <h5>Loading...</h5> : null }
+                        {loading ? <h5>Loading...</h5> : null }
                         {createCustomer ? <h4>You have created a new Customer.</h4> : null }
-                        {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null } */}
+                        {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
                     
                     </form>
-                </Modal>
+                </Modal> */}
 
             </div>
             );
