@@ -1,19 +1,59 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
 import Modal from 'react-modal';
-
+import axios from 'axios';
 class Customer extends Component {
-    // constructor(props) {
-    //     super(props);
+    constructor(props) {
+        super(props);
         
-    //     let addCustomerName = false
-    //     this.state = {
-    //         addCustomerName
-    //     }
+        let loadingCreateMovie = false
+        let createMovie = false
+        let errorMsg = false
+        // let addCustomerName = false
+        this.state = {
+            // addCustomerName
+            genre: [], title:'', stock:'', genreId:'', rate:'', loadingCreateMovie, createMovie, errorMsg
+        }
+        this.addMovie = this.addMovie.bind(this)
+        this.submitAddMovieForm = this.submitAddMovieForm.bind(this)
+    }
 
-    // }
+    addMovie(e){
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    submitAddMovieForm(e){
+        e.preventDefault()
+        const { title, stock, genreId, rate } = this.state
+        console.log(title, genreId, stock, rate )
+        this.setState({
+            loadingCreateMovie: true
+        })
+        axios.post('https://vidly-unique.herokuapp.com/api/movies', {title, genreId, stock, rate })
+        .then( response => {
+            this.setState({loadingCreateMovie : false, createMovie: true })
+        })
+        .catch ( error => {
+            this.setState({loadingCreateMovie : false, errorMsg: true })
+        })
+    }
+
+    componentDidMount(){
+        axios.get('https://vidly-unique.herokuapp.com/api/genres')
+        .then( response => {
+            console.log(response)
+            this.setState({ genre: response.data })
+        })
+        .catch( error => {
+            console.log( error )
+        })
+    }
+
+    selectedGenre(name){
+        document.getElementById('selectedGenre').innerHTML = ':Movie type: ' + name
+    }
 
     logOut(){
         localStorage.removeItem("x-auth-token")
@@ -21,6 +61,7 @@ class Customer extends Component {
 
     render(){
         const { movies, loading, customer } = this.props
+        const { genre, loadingCreateMovie, createMovie, errorMsg } = this.state
         // const customerNameList = customer.map(name => {
         //     return(
         //         <div key={name._id}>
@@ -29,13 +70,23 @@ class Customer extends Component {
         //         </div>
         //     )
         // })
+
+            const genreNameList = genre.map(name => {
+                return(
+                    <div key={name._id}>
+                        <Button variant="light" size="sm" 
+                        onClick={() =>  {this.setState({genreId: name._id}, this.selectedGenre(name.name) )}}>
+                        {name.name} </Button>
+                    </div>
+                )
+            })
     
             return (
                 <div className="container-fluid">
                 <div className="row">
                     <div className="col-10">
                     <h1 className="cust-list">{this.props.title}</h1>
-                    <Button variant="primary addButton" onClick={()=> {this.setState({addCustomerShow:true})}}>Add Movie</Button>
+                    <Button variant="primary addButton" onClick={()=> {this.setState({addMovieShow:true})}}>Add Movie</Button>
                     </div>
                     <div className="col-2 logOutButton">
                     <Link to="/"><Button variant="primary" onClick={()=> {this.logOut()}}>Log Out</Button></Link>
@@ -59,7 +110,9 @@ class Customer extends Component {
                     <div className="box">
                     <div className="row">
                     <div className="col-4 col-style pd-l">
-                    <Button >{/*onClick={()=> {this.setState({addCustomerName:true, selectedBook: post.title})}} */} {post.title}</Button></div>
+                    <Button >
+                    {/*onClick={()=> {this.setState({addCustomerName:true, selectedBook: post.title})}} */} 
+                    {post.title}</Button></div>
                     <div className="col-4 col-style pd-l">{post.genre.name}</div> 
                     <div className="col-2 col-style">{post.dailyRentalRate}$</div>
                     <div className="col-2 col-style pd-l">{post.numberInStock}</div> 
@@ -71,6 +124,31 @@ class Customer extends Component {
                </div>
                 } 
               </div>
+
+              <Modal isOpen={this.state.addMovieShow} 
+                       onRequestClose={() => {this.setState({addMovieShow:false})}} 
+                       ariaHideApp={false}
+                       className="pop-content">
+                        <form onSubmit={this.submitAddMovieForm}>
+                        <div className="selectedItem">
+                            <li><input type="text" placeholder="Name" required name="title" value={this.state.title} onChange={this.addMovie} /></li>     
+                            <li><input type="number" placeholder="Stock" name="stock" value={this.state.stock} onChange={this.addMovie} /></li>
+                            <li><input type="number" placeholder="Rental rate" name="rate" value={this.state.rate} onChange={this.addMovie} /></li>
+                            <div className="selected" id="selectedGenre"></div>
+                            {loadingCreateMovie ? <h5>Loading...</h5> : null }
+                            {createMovie ? <h4>You have created a new Movie.</h4> : null }
+                            {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
+                        </div>
+                        
+                        <div className="selection">
+                            <h3 >Choose type</h3>
+                            <div className="list">{genreNameList}</div>
+                            <input type="submit" />
+                        </div>
+                    
+                        </form>
+
+                </Modal>
 
               {/* <Modal isOpen={this.state.addCustomerName} 
                     onRequestClose={() => {this.setState({addCustomerName:false})}} 
