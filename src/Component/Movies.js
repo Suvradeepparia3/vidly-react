@@ -13,7 +13,7 @@ class Customer extends Component {
         // let addCustomerName = false
         this.state = {
             // addCustomerName
-            genre: [], title:'', stock:'', genreId:'', rate:'', loadingCreateMovie, createMovie, errorMsg
+            genre: [], title:'', numberInStock:'', genreId:'', dailyRentalRate:'', loadingCreateMovie, createMovie, errorMsg
         }
         this.addMovie = this.addMovie.bind(this)
         this.submitAddMovieForm = this.submitAddMovieForm.bind(this)
@@ -26,14 +26,14 @@ class Customer extends Component {
     }
     submitAddMovieForm(e){
         e.preventDefault()
-        const { title, stock, genreId, rate } = this.state
-        console.log(title, genreId, stock, rate )
+        const { title, numberInStock, genreId, dailyRentalRate } = this.state
+        console.log(title, genreId, numberInStock, dailyRentalRate )
         this.setState({
             loadingCreateMovie: true
         })
-        axios.post('https://vidly-unique.herokuapp.com/api/movies', {title, genreId, stock, rate })
+        axios.post('https://vidly-unique.herokuapp.com/api/movies', {title, genreId, numberInStock, dailyRentalRate })
         .then( response => {
-            this.setState({loadingCreateMovie : false, createMovie: true })
+            this.setState({loadingCreateMovie : false, createMovie: true, addMovieShow:false })
         })
         .catch ( error => {
             this.setState({loadingCreateMovie : false, errorMsg: true })
@@ -60,16 +60,9 @@ class Customer extends Component {
     }
 
     render(){
-        const { movies, loading, customer } = this.props
+        const { movies, loading } = this.props
         const { genre, loadingCreateMovie, createMovie, errorMsg } = this.state
-        // const customerNameList = customer.map(name => {
-        //     return(
-        //         <div key={name._id}>
-        //         <Button variant="light" size="sm" 
-        //         onClick={() => document.getElementById('selectedCustomer').innerHTML = name.name } >{name.name} </Button>
-        //         </div>
-        //     )
-        // })
+      
 
             const genreNameList = genre.map(name => {
                 return(
@@ -110,9 +103,7 @@ class Customer extends Component {
                     <div className="box">
                     <div className="row">
                     <div className="col-4 col-style pd-l">
-                    <Button >
-                    {/*onClick={()=> {this.setState({addCustomerName:true, selectedBook: post.title})}} */} 
-                    {post.title}</Button></div>
+                    {post.title}</div>
                     <div className="col-4 col-style pd-l">{post.genre.name}</div> 
                     <div className="col-2 col-style">{post.dailyRentalRate}$</div>
                     <div className="col-2 col-style pd-l">{post.numberInStock}</div> 
@@ -132,11 +123,11 @@ class Customer extends Component {
                         <form onSubmit={this.submitAddMovieForm}>
                         <div className="selectedItem">
                             <li><input type="text" placeholder="Name" required name="title" value={this.state.title} onChange={this.addMovie} /></li>     
-                            <li><input type="number" placeholder="Stock" name="stock" value={this.state.stock} onChange={this.addMovie} /></li>
-                            <li><input type="number" placeholder="Rental rate" name="rate" value={this.state.rate} onChange={this.addMovie} /></li>
+                            <li><input type="number" placeholder="Stock" name="numberInStock" value={this.state.numberInStock} onChange={this.addMovie} /></li>
+                            <li><input type="number" placeholder="Rental rate" name="dailyRentalRate" value={this.state.dailyRentalRate} onChange={this.addMovie} /></li>
                             <div className="selected" id="selectedGenre"></div>
                             {loadingCreateMovie ? <h5>Loading...</h5> : null }
-                            {createMovie ? <h4>You have created a new Movie.</h4> : null }
+                            {createMovie ? <h5>You have created a new Movie.</h5> : null }
                             {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
                         </div>
                         
@@ -150,33 +141,8 @@ class Customer extends Component {
 
                 </Modal>
 
-              {/* <Modal isOpen={this.state.addCustomerName} 
-                    onRequestClose={() => {this.setState({addCustomerName:false})}} 
-                    ariaHideApp={false}
-                    className="pop-content">
-                    <form onSubmit={this.submitAddCustomerForm}>
-
-                       <div className="selectedItem">
-                       <h3>Selected movie</h3> 
-                       <div className="selected">{this.state.selectedBook}</div>
-                       <h3>Selected customer</h3> 
-                       <div className="selected" id="selectedCustomer"></div>
-                       </div>
-                        
-                        <div className="selection">
-                        <h3 >Choose customer</h3>
-                        <div className="list">{customerNameList}</div>
-                        <input type="submit" />
-                        </div>
-            
-                        
-                        {loading ? <h5>Loading...</h5> : null }
-                        {createCustomer ? <h4>You have created a new Customer.</h4> : null }
-                        {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
-                    
-                    </form>
-                </Modal> */}
-
+                            
+                            
             </div>
             );
     }

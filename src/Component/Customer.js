@@ -22,9 +22,9 @@ class Customer extends Component {
             createRental, 
             errorMsg, 
             name: '', 
-            phoneNo: '', 
-            subscribe: '',
-            bookId:'',
+            phone: '', 
+            isGold: '',
+            movieId:'',
             customerId:''
         }
         this.addCustomer = this.addCustomer.bind(this)
@@ -41,12 +41,12 @@ class Customer extends Component {
 
     submitAddCustomerForm(e){
         e.preventDefault()
-        const { name, phoneNo, subscribe} = this.state
-        console.log(name, phoneNo, subscribe)
+        const { name, phone, isGold} = this.state
+        console.log(name, phone, isGold)
         this.setState({
             loadingCreateCustomer: true
         })
-        axios.post('https://vidly-unique.herokuapp.com/api/customers', {name, phoneNo, subscribe})
+        axios.post('https://vidly-unique.herokuapp.com/api/customers', {name, phone, isGold})
         .then( response => {
             console.log(response)
             this.setState({ loadingCreateCustomer: false, createCustomer: true })
@@ -60,12 +60,12 @@ class Customer extends Component {
     submitAddRentalForm(e){
         e.preventDefault()
         const token = localStorage.getItem("x-auth-token")
-        const { bookId, customerId } = this.state
+        const {  movieId, customerId } = this.state
         this.setState({
             loadingAddRental: true
         })
-        console.log(bookId, customerId, token)
-        axios.post('https://vidly-unique.herokuapp.com/api/rentals', { bookId, customerId },
+        console.log( movieId, customerId, token)
+        axios.post('https://vidly-unique.herokuapp.com/api/rentals', {movieId, customerId },
         {
             headers: {
                 'x-auth-token': `${token}`
@@ -73,7 +73,7 @@ class Customer extends Component {
         })
         .then( response => {
             console.log(response)
-            this.setState({loadingAddRental: false, createRental: true})
+            this.setState({loadingAddRental: false, createRental: true })
         })
         .catch( error => {
             console.log(error)
@@ -96,7 +96,7 @@ class Customer extends Component {
             return(
                 <div key={name._id}>
                 <Button variant="light" size="sm" 
-                onClick={() =>  {this.setState({bookId: name._id}, this.selectedBook(name.title) )}}>
+                onClick={() =>  {this.setState({movieId: name._id}, this.selectedBook(name.title) )}}>
                 {name.title} </Button>
                 </div>
             )
@@ -154,16 +154,16 @@ class Customer extends Component {
                         <form onSubmit={this.submitAddCustomerForm}>
                         <ul>
                             <li><input type="text" placeholder="Name" required name="name" value={this.state.name} onChange={this.addCustomer} /></li>     
-                            <li><input type="number" placeholder="Phone No" name="phoneNo" value={this.state.phoneNo} onChange={this.addCustomer} /></li>
+                            <li><input type="number" placeholder="Phone No" name="phone" value={this.state.phone} onChange={this.addCustomer} /></li>
                             <label htmlFor="subscribe" style={{color: "white", margin: "0px 10px 20px 0px"}}>Subscription:</label>
-                            <select id="subscribe" name="subscribe" onChange={this.addCustomer} required>
+                            <select id="subscribe" name="isGold" onChange={this.addCustomer} required>
                                     <option value="" >---</option>
                                     <option value="true" >Gold</option>
                                     <option value="false">Not Gold</option>
                             </select>
                             <li><input type="submit" /></li>
                             {loadingCreateCustomer ? <h5>Loading...</h5> : null }
-                            {createCustomer ? <h4>You have created a new Customer.</h4> : null }
+                            {createCustomer ? <h5>You have created a new Customer.</h5> : null }
                             {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
                         </ul>
                         </form>
@@ -190,7 +190,7 @@ class Customer extends Component {
             
                         
                         {loadingAddRental ? <h5>Loading...</h5> : null }
-                        {createRental ? <h4>Successful. Go to Dashboard.</h4> : null }
+                        {createRental ? <h5>Successful. Go to Dashboard.</h5> : null }
                         {errorMsg ? <p id="invalid-msg">Something is wrong.</p> : null }
                     
                     </form>
