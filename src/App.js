@@ -12,7 +12,7 @@ class App extends Component {
       <BrowserRouter >
       <div className="App">
           <Home />
-          <Route exact path={"/"} component={Login}  /> 
+          <Route path={"/"} component={Login}  /> 
           <Route
              path='/Dashboard'
              render={(props) => (
