@@ -63,10 +63,9 @@ class Dashboard extends Component {
               
                 <div className="container list-header">
                 <div className="row">
-                    <div className="col-3 header-component">{this.props.name}</div>
-                    <div className="col-5 header-component pd-l">{this.props.movie}</div>
+                    <div className="col-4 header-component">{this.props.name}</div>
+                    <div className="col-6 header-component pd-l">{this.props.movie}</div>
                     <div className="col-2 header-component">{this.props.date}</div>
-                    <div className="col-2 header-component">{this.props.total}</div>
                 </div>
                 </div>
                 {loading ? <div id="loading"><h4>Loading...</h4></div> : <div className="data">
@@ -76,10 +75,9 @@ class Dashboard extends Component {
                 <div key={post._id}>
                     <div className="box">
                     <div className="row">
-                    <div className="col-3 col-style pd-l">{post.customer.name} ({post.customer.phone})</div>
-                    <div className="col-5 col-style pd-l">{post.movie.title}---({post.movie.dailyRentalRate}$)</div> 
-                    <div className="col-2 col-style pd-l">{post.dateOut.slice(0, 10)}</div>
-                    <div className="col-2 col-style">{}</div> 
+                    <div className="col-4 col-style pd-l">{post.customer.name} ({post.customer.phone})</div>
+                    <div className="col-6 col-style pd-l">{post.movie.title}---({post.movie.dailyRentalRate}$)</div> 
+                    <div className="col-2 col-style pd-l">{post.dateOut.slice(0, 10)}</div> 
                     </div>
                     </div>
                 </div>) :
